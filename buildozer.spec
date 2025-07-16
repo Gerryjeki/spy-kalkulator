@@ -2,7 +2,9 @@
 title = Kalkulator Google
 package.name = kalkulatorgoogle
 package.domain = com.google.calc
+source.dir = .
 source.include_exts = py,png,kv
+version = 1.0
 icon.filename = icon.png
 
 requirements = kivy, android
