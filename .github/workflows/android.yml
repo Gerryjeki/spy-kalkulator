@@ -30,6 +30,11 @@ jobs:
         run: |
           buildozer android debug
 
+      - name: Install Android SDK and AIDL
+        run: |
+          sudo apt install -y android-sdk
+          yes | buildozer android update
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
