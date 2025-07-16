@@ -23,7 +23,7 @@ jobs:
             libssl-dev libncurses5-dev libsqlite3-dev \
             libjpeg-dev libfreetype6-dev zlib1g-dev \
             liblcms2-dev libblas-dev liblapack-dev libatlas-base-dev \
-            libtiff-dev build-essential autoconf libtool pkg-config
+            libtiff-dev build-essential autoconf libtool pkg-config automake
           pip install buildozer cython
 
       - name: Install Android SDK and AIDL
