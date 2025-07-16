@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y python3-distutils autoconf libtool pkg-config automake \
+        sudo apt install -y python3-venv autoconf libtool pkg-config automake \
           zip unzip git python3-pip openjdk-17-jdk \
           python3-setuptools python3-wheel libffi-dev \
           libssl-dev libncurses5-dev libsqlite3-dev \
