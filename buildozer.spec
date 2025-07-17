@@ -7,7 +7,7 @@ source.include_exts = py,png,kv
 version = 1.0
 icon.filename = icon.png
 
-requirements = kivy,
+requirements = kivy,android,pyjnius
 
 android.permissions = READ_CONTACTS, READ_EXTERNAL_STORAGE, INTERNET
 
