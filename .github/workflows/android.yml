@@ -2,7 +2,8 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,42 +13,43 @@ jobs:
       ANDROID_HOME: ${{ github.workspace }}/android-sdk
       PATH: ${{ github.workspace }}/android-sdk/platform-tools:${{ github.workspace }}/android-sdk/cmdline-tools/tools/bin:${{ github.workspace }}/android-sdk/tools/bin:$PATH
 
-    - name: Checkout repository manually
-      run: |
-        sudo apt update
-        sudo apt install -y git tar
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        git clone https://github.com/${{ github.repository }} .
+    steps:
+      - name: Checkout repository manually
+        run: |
+          sudo apt update
+          sudo apt install -y git tar
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git clone https://github.com/${{ github.repository }} .
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y tar zip unzip openjdk-17-jdk python3-pip \
-          python3-setuptools python3-wheel build-essential \
-          libffi-dev libssl-dev libncurses5-dev libsqlite3-dev \
-          libjpeg-dev libfreetype6-dev zlib1g-dev curl
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y tar zip unzip openjdk-17-jdk python3-pip \
+            python3-setuptools python3-wheel build-essential \
+            libffi-dev libssl-dev libncurses5-dev libsqlite3-dev \
+            libjpeg-dev libfreetype6-dev zlib1g-dev curl
 
-        pip install --upgrade pip setuptools wheel cython buildozer
+          pip install --upgrade pip setuptools wheel cython buildozer
 
-    - name: Install Android SDK and AIDL
-      run: |
-        mkdir -p $ANDROID_HOME/cmdline-tools
-        cd $ANDROID_HOME/cmdline-tools
-        curl -O https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        unzip commandlinetools-linux-11076708_latest.zip -d tools
+      - name: Install Android SDK and AIDL
+        run: |
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          curl -O https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip commandlinetools-linux-11076708_latest.zip -d tools
 
-        yes | $ANDROID_HOME/cmdline-tools/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME \
-          "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          yes | $ANDROID_HOME/cmdline-tools/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+            "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-    - name: Build APK
-      run: |
-        export ANDROIDSDK=$ANDROID_HOME
-        export PATH=$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/tools/bin:$PATH
-        buildozer android debug
+      - name: Build APK
+        run: |
+          export ANDROIDSDK=$ANDROID_HOME
+          export PATH=$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/tools/bin:$PATH
+          buildozer android debug
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: kalkulator-google
-        path: bin/*.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: kalkulator-google
+          path: bin/*.apk
