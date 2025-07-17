@@ -27,12 +27,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y zip unzip openjdk-17-jdk python3-pip \
-          python3-setuptools python3-wheel build-essential \
-          libffi-dev libssl-dev libncurses5-dev libsqlite3-dev \
-          libjpeg-dev libfreetype6-dev zlib1g-dev curl
-
-        pip install --upgrade pip setuptools wheel cython buildozer
+        sudo apt install -y tar zip unzip openjdk-17-jdk python3-pip \
+        python3-setuptools python3-wheel build-essential \
+        libffi-dev libssl-dev libncurses5-dev libsqlite3-dev \
+        libjpeg-dev libfreetype6-dev zlib1g-dev curl
+       pip install --upgrade pip setuptools wheel cython buildozer
+       echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install Android SDK
       run: |
@@ -43,6 +43,9 @@ jobs:
 
         yes | $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager --sdk_root=$HOME/android-sdk \
           "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+    - name: Cek isi buildozer.spec
+      run: cat buildozer.spec
 
     - name: Build APK
       run: |
