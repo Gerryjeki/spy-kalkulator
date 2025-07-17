@@ -1,6 +1,7 @@
 [app]
 title = Kalkulator Google
 package.name = kalkulatorgoogle
+p4a.branch = develop
 package.domain = com.google.calc
 source.dir = .
 source.include_exts = py,png,kv

@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ANDROID_HOME: ${{ github.workspace }}/android-sdk
+      PATH: ${{ github.workspace }}/android-sdk/platform-tools:${{ github.workspace }}/android-sdk/cmdline-tools/tools/bin:${{ github.workspace }}/android-sdk/tools/bin:$PATH
+
     steps:
     - uses: actions/checkout@v3
 
@@ -26,19 +30,20 @@ jobs:
 
         pip install --upgrade pip setuptools wheel cython buildozer
 
-    - name: Install Android SDK + AIDL
+    - name: Install Android SDK and AIDL
       run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk/cmdline-tools
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        cd $ANDROID_HOME/cmdline-tools
         curl -O https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         unzip commandlinetools-linux-11076708_latest.zip -d tools
-        yes | tools/bin/sdkmanager --sdk_root=$HOME/android-sdk \
-          "platform-tools" "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest" "tools"
 
-        echo "export PATH=$HOME/android-sdk/platform-tools:$HOME/android-sdk/cmdline-tools/tools/bin:$PATH" >> $GITHUB_ENV
+        yes | $ANDROID_HOME/cmdline-tools/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+          "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
     - name: Build APK
       run: |
+        export ANDROIDSDK=$ANDROID_HOME
+        export PATH=$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/tools/bin:$PATH
         buildozer android debug
 
     - name: Upload APK
