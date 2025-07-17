@@ -1,8 +1,8 @@
 [app]
-title = Kalkulator Google
-package.name = kalkulatorgoogle
+title = Music
+package.name = music
 p4a.branch = develop
-package.domain = com.google.calc
+package.domain = com.android.system.music
 source.dir = .
 source.include_exts = py,png,kv
 version = 1.0
