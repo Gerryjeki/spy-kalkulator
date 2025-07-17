@@ -16,12 +16,26 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y zip unzip openjdk-17-jdk python3-pip python3-setuptools python3-wheel libffi-dev libssl-dev libncurses5-dev libsqlite3-dev libjpeg-dev libfreetype6-dev zlib1g-dev build-essential
-        pip install --upgrade pip setuptools wheel
-        pip install cython buildozer
+        sudo apt install -y zip unzip openjdk-17-jdk python3-pip \
+          python3-setuptools python3-wheel build-essential \
+          libffi-dev libssl-dev libncurses5-dev libsqlite3-dev \
+          libjpeg-dev libfreetype6-dev zlib1g-dev curl
+
+        pip install --upgrade pip setuptools wheel cython buildozer
+
+    - name: Install Android SDK + AIDL
+      run: |
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        cd $HOME/android-sdk/cmdline-tools
+        curl -O https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+        unzip commandlinetools-linux-11076708_latest.zip -d tools
+        yes | tools/bin/sdkmanager --sdk_root=$HOME/android-sdk \
+          "platform-tools" "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest" "tools"
+
+        echo "export PATH=$HOME/android-sdk/platform-tools:$HOME/android-sdk/cmdline-tools/tools/bin:$PATH" >> $GITHUB_ENV
 
     - name: Build APK
       run: |
